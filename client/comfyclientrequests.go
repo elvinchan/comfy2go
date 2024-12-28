@@ -57,7 +57,7 @@ func (c *ComfyClient) GetSystemStats() (*SystemStats, error) {
 }
 
 func (c *ComfyClient) GetPromptHistoryByIndex() ([]PromptHistoryItem, error) {
-	history, err := c.GetPromptHistoryByID()
+	history, err := c.GetPromptHistoryByID("")
 	if err != nil {
 		return nil, err
 	}
@@ -79,8 +79,12 @@ func (c *ComfyClient) GetPromptHistoryByIndex() ([]PromptHistoryItem, error) {
 	return retv, nil
 }
 
-func (c *ComfyClient) GetPromptHistoryByID() (map[string]PromptHistoryItem, error) {
-	resp, err := c.httpclient.Get(fmt.Sprintf("http://%s/history", c.serverBaseAddress))
+func (c *ComfyClient) GetPromptHistoryByID(id string) (map[string]PromptHistoryItem, error) {
+	url := "http://%s/history"
+	if id != "" {
+		url = "http://%s/history/" + id
+	}
+	resp, err := c.httpclient.Get(fmt.Sprintf(url, c.serverBaseAddress))
 	if err != nil {
 		return nil, err
 	}
