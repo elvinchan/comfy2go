@@ -117,6 +117,10 @@ func (cc *ComfyClient) OnMessage(message string) {
 	cc.OnWindowSocketMessage(message)
 }
 
+func (c *ComfyClient) Ping() error {
+	return c.webSocket.Ping()
+}
+
 // IsInitialized returns true if the client's websocket is connected and initialized
 func (c *ComfyClient) IsInitialized() bool {
 	if c.initialized {
